@@ -6,6 +6,6 @@ namespace i321
 {
     public class ApplicationContext(DbContextOptions<ApplicationContext> options) : DbContext(options)
     {
-        public DbSet<commandes> Commandes { get; set; }
+        public DbSet<commandes> commandes { get; set; }
     }
 }

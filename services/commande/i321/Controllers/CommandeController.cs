@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace i321.Controllers
 {
 
-    [Route("/commande")]
+    [Route("[controller]")]
     [ApiController]
     public class CommandeController(ApplicationContext context) : ControllerBase
     {
@@ -14,14 +14,14 @@ namespace i321.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<commandes>> GetAll() 
         {
-            return _context.Commandes.ToList();
+            return _context.commandes.ToList();
         }
 
         [HttpGet("{id:int}")]
         public ActionResult<commandes> Get(int id)
         {
 
-           var commande = _context.Commandes.Find(id);
+           var commande = _context.commandes.Find(id);
 
            if (commande == null)
            {
@@ -33,7 +33,7 @@ namespace i321.Controllers
         [HttpPost]
         public ActionResult<commandes> InsertCommande(commandes commande)
         {
-           _context.Commandes.Add(commande);
+           _context.commandes.Add(commande);
 
            try
            {
@@ -54,7 +54,7 @@ namespace i321.Controllers
                return BadRequest();
            }
 
-           var commandeToPatch = _context.Commandes.Find(id);
+           var commandeToPatch = _context.commandes.Find(id);
 
            if(commandeToPatch == null)
            {
@@ -80,14 +80,14 @@ namespace i321.Controllers
         [HttpDelete("{id:int}")]
         public ActionResult<IEnumerable<commandes>> Delete(int id)
         {
-           var command = _context.Commandes.Find(id);
+           var command = _context.commandes.Find(id);
 
            if (command == null)
            {
                return NotFound(id);
 
            }
-           _context.Commandes.Remove(command);
+           _context.commandes.Remove(command);
 
            return Ok("command delete");
         }
