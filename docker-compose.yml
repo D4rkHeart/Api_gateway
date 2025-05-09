@@ -32,19 +32,18 @@ services:
 
   commandes_service:
     build: ./services/commande/i321
-    ports:
-      - "5024" 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.commande.rule=PathPrefix(`/command`)"
+      - "traefik.http.routers.commande.rule=PathPrefix(`/commande`)"
       - "traefik.http.routers.commande.entrypoints=web"
-      - "traefik.http.services.commande.loadbalancer.server.port=5024"
+      - "traefik.http.services.commande.loadbalancer.server.port=80"
     depends_on:
       - mariadb
     networks:
       - backend
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
 
   catalogue_service:
     build: ./services/catalogue
