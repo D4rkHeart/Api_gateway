@@ -15,6 +15,7 @@ Ce projet est une architecture microservices simple pour un système e-commerce,
 ```
 client ──> Traefik (http://localhost:8088)
             ├── /catalogue     → Flask API
+            ├── /commande      → ASP.NET
             └── /phpmyadmin    → Interface DB (http://localhost:8888)
 ```
 
@@ -44,6 +45,20 @@ Le service catalogue expose les routes suivantes :
 | `PUT`   | `/catalogue/<id>`     | Remplace un produit              |
 | `PATCH` | `/catalogue/<id>`     | Modifie partiellement un produit |
 | `DELETE`| `/catalogue/<id>`     | Supprime un produit              |
+
+---
+
+## API Commande
+
+Le service commande expose les routes suivantes :
+
+| Méthode | Endpoint              | Description                        |
+|---------|-----------------------|------------------------------------|
+| `GET`   | `/commande`           | Liste toute les commandes          |
+| `GET`   | `/commande/<id>`      | Détail d’une commande              |
+| `POST`  | `/commande`           | Crée une nouvelle commande         |
+| `PUT`   | `/commande/<id>`      | Remplace une commande              |
+| `DELETE`| `/commande/<id>`      | Supprime une commande              |
 
 ---
 
@@ -85,7 +100,11 @@ Ce script appelle :
 - `PUT /catalogue/1`
 - `PATCH /catalogue/1`
 - `DELETE /catalogue/1`
-
+- `POST /commande`
+- `GET /commande`
+- `GET /commande/1`
+- `PUT /commande/1`
+- `DELETE /commande/1`
 ---
 
 ## Outils
@@ -112,6 +131,24 @@ Ce script appelle :
         ├── app.py
         ├── Dockerfile
         └── requirements.txt
+    └── commande/
+        ├── .dockerignore
+        ├── .gitignore
+        ├── i321.sln
+        └──i321/
+            ├── Controllers/
+            │    └── CommandeController.cs
+            ├── Properties/
+            │    └── launchSettings.json
+            ├── ApplicationContext.cs
+            ├── appsettings.Development.json
+            ├── appsettings.json
+            ├── commandes.cs
+            ├── Dockerfile
+            ├── i321.csproj
+            ├── i321.http
+            ├── Program.cs
+
 ```
 
 ---
