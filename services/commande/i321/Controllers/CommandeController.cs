@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace i321.Controllers
 {
@@ -49,11 +48,6 @@ namespace i321.Controllers
         [HttpPut("{id:int}")]
         public ActionResult<IEnumerable<commandes>> Patch([FromRoute]int id, commandes commande)
         {
-           if(id != commande.Id)
-           {
-               return BadRequest();
-           }
-
            var commandeToPatch = _context.commandes.Find(id);
 
            if(commandeToPatch == null)
@@ -67,14 +61,14 @@ namespace i321.Controllers
 
            try
            {
-               _context.SaveChanges();
+               _context.Update(commandeToPatch);
            }
            catch (Exception ex)
            {
                return NotFound(ex.Message);
            }
 
-           return Ok(commande);
+           return Ok(commandeToPatch);
         }
 
         [HttpDelete("{id:int}")]
@@ -89,7 +83,17 @@ namespace i321.Controllers
            }
            _context.commandes.Remove(command);
 
-           return Ok("command delete");
+            try
+            {
+                _context.SaveChanges();
+            } 
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
+            return Ok("commande delete");
         }
     }
 }
