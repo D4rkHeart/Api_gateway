@@ -43,4 +43,36 @@ echo "DELETE /catalogue/1"
 curl -s -X DELETE http://localhost:8088/catalogue/1
 echo -e "\n DELETE OK"
 
+echo "POST /commande"
+curl -s -X POST http://localhost:8088/commande \
+  -H "Content-Type: application/json" \
+  -d '{
+    "total": 100,
+    "statut": "expédiée",
+    "date_commande": "2025-05-10T12:00:00"
+}'
+echo -e "\n POST OK"
+
+echo "GET ALL /commande"
+curl -s http://localhost:8088/commande
+echo -e "\n GET ALL OK"
+
+echo "GET ONE /commande/1"
+curl -s http://localhost:8088/commande/1
+echo -e "\n GET ONE OK"
+
+echo "PUT /commande/1"
+curl -s -X PUT http://localhost:8088/commande/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "total": 2,
+    "statut": "en cours",
+    "date_commande": "2025-04-12T20:00:00"
+}'
+echo -e "\n PUT OK"
+
+echo "DELETE /commande/1"
+curl -s -X DELETE http://localhost:8088/commande/1
+echo -e "\n DELETE OK"
+
 echo " Tous les tests ont été exécutés avec succès."

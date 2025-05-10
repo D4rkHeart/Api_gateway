@@ -1,1 +1,0 @@
-curl.exe '-X', 'GET', 'http://localhost:5024/commande'
