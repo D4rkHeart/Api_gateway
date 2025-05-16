@@ -1,11 +1,12 @@
 
 .PHONY: up build down logs clean clean-volumes install test
 
-up:
-	docker compose up -d
+init:
+	docker build -t i321/commandes_service ./services/commande/i321
+	docker build -t i321/catalogue_service ./services/catalogue
 
-build:
-	docker compose up --build -d
+up:
+	docker stack -c docker-compose.yml
 
 down:
 	docker compose down

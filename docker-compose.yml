@@ -18,37 +18,40 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    restart: always
-    ports:
-      - 8888:80
     environment:
       PMA_HOST: mariadb
       PMA_USER: root
       PMA_PASSWORD: rootpass
+    ports:
+      - "8888:80"
     depends_on:
       - mariadb
     networks:
       - backend
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   commandes_service:
-    build: ./services/commande/i321
+    image: i321/commandes_service:latest
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.commande.rule=PathPrefix(`/commande`)"
       - "traefik.http.routers.commande.entrypoints=web"
       - "traefik.http.services.commande.loadbalancer.server.port=80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
       - mariadb
     networks:
       - backend
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   catalogue_service:
-    build: ./services/catalogue
-    ports:
-      - "5000" 
+    image: i321/catalogue_service:latest
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.catalogue.rule=PathPrefix(`/catalogue`)"
@@ -58,6 +61,9 @@ services:
       - mariadb
     networks:
       - backend
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   traefik:
     image: traefik:v2.11
@@ -72,10 +78,18 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - backend
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+configs:
+  init_sql:
+    file: ./db/init.sql
 
 volumes:
   mariadb_data:
-
+  
 networks:
   backend:
-    driver: bridge
+    driver: overlay
